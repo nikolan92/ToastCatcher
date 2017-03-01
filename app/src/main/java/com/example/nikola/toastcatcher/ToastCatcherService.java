@@ -12,6 +12,7 @@ import com.example.nikola.toastcatcher.DataLayer.LogItem;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.LinkedList;
+import java.util.Locale;
 
 
 public class ToastCatcherService extends AccessibilityService {
@@ -52,13 +53,13 @@ public class ToastCatcherService extends AccessibilityService {
         else if(!sourcePackageName.equals(this.getPackageName())){
             // something else, e.g. a Toast message
 
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd      HH:mm:ss");
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd      HH:mm:ss", Locale.US);
             String currentDateAndTime = sdf.format(new Date());
-
-            logItems.addFirst(new LogItem(currentDateAndTime, event.getText().toString(),(String) event.getPackageName()));
+            logItems.addLast(new LogItem(currentDateAndTime, event.getText().get(0).toString(), (String) event.getPackageName()));
             numberOfLogItems++;
+
             if(numberOfLogItems>10) {
-                logItems.removeLast();
+                logItems.removeFirst();
                 numberOfLogItems--;
             }
         }
